@@ -2,13 +2,11 @@ package qbert.level;
 
 import qbert.exceptions.MissingBlockException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Level {
 
-    private List<Block> blocks = new ArrayList<>();
+    private final List<Block> blocks = new ArrayList<>();
     private Block startingBlock;
 
     public Level() {
@@ -26,13 +24,11 @@ public class Level {
     }
 
     public List<Block> getBlocks() {
-        if (startingBlock != null) {
-            List<Block> traversedBlocks = new ArrayList<>();
-            List<Block> alreadyVisitedBlocks = new ArrayList<>();
-            traverseBlocks(traversedBlocks, startingBlock, alreadyVisitedBlocks);
-            return traversedBlocks;
-        }
         return blocks;
+    }
+
+    public Block getStartingBlock() {
+        return startingBlock;
     }
 
     public void setStartingBlock(Block startingBlock) {
@@ -41,26 +37,6 @@ public class Level {
         } else {
             throw new MissingBlockException("The given starting block is not part of the level yet!");
         }
-    }
-
-    private void traverseBlocks(List<Block> listTraversedBlocks, Block block, List<Block> listVisitedBlocks) {
-        if (listVisitedBlocks.contains(block)) {
-            return;
-        }
-
-        listVisitedBlocks.add(block);
-
-        if (!listTraversedBlocks.contains(block)) {
-            listTraversedBlocks.add(block);
-        }
-
-        for (Neighbors neighbor : Neighbors.values()) {
-            Block neighborBlock = block.getNeighbor(neighbor);
-            if (neighborBlock != null) {
-                traverseBlocks(listTraversedBlocks, neighborBlock, listVisitedBlocks);
-            }
-        }
-
     }
 
 }
