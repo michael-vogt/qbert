@@ -1,10 +1,5 @@
 package qbert.level;
 
-import qbert.exceptions.NotANeighborException;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Block {
 
     private final int id;
@@ -32,16 +27,6 @@ public class Block {
         };
     }
 
-    public List<Block> getNeighbors() {
-        List<Block> neighbors = new ArrayList<>();
-        for (Neighbors neighbor : Neighbors.values()) {
-            if (getNeighbor(neighbor) != null) {
-                neighbors.add(getNeighbor(neighbor));
-            }
-        }
-        return  neighbors;
-    }
-
     public Block getNeighborUpperLeft() {
         return neighborUpperLeft;
     }
@@ -56,20 +41,6 @@ public class Block {
 
     public Block getNeighborLowerRight() {
         return neighborLowerRight;
-    }
-
-    public Neighbors getNeighboringDirection(Block other) {
-        if (neighborUpperLeft.equals(other)) {
-            return Neighbors.NEIGHBOR_UPPER_LEFT;
-        } else if (neighborUpperRight.equals(other)) {
-            return Neighbors.NEIGHBOR_UPPER_RIGHT;
-        } else if (neighborLowerLeft.equals(other)) {
-            return Neighbors.NEIGHBOR_LOWER_LEFT;
-        } else if (neighborLowerRight.equals(other)) {
-            return Neighbors.NEIGHBOR_LOWER_RIGHT;
-        }
-
-        throw new NotANeighborException("Given block is not a neighor!");
     }
 
     public int getRow() {

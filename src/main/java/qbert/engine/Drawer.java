@@ -49,16 +49,6 @@ public class Drawer {
 
         AffineTransform T0 = g2d.getTransform();
 
-        /*if (levelDimensionInPixel.height > canvasSize.height || levelDimensionInPixel.width > canvasSize.width) {
-            double factorX = canvasSize.getHeight() / levelDimensionInPixel.getHeight();
-            double factorY = canvasSize.getWidth() / levelDimensionInPixel.getWidth();
-            double factor = Math.min(factorX, factorY);
-
-            startX = canvasSize.width / 2;
-            startY = (canvasSize.height - (int) (levelDimensionInPixel.height * factor)) / 2 + (int)dy;
-
-            T0.scale(factor, factor);
-        }*/
         T0.translate(startX, startY);
 
         List<Block> blocks = level.getBlocks();
