@@ -11,6 +11,9 @@ public class Engine {
 
     private static Engine instance = null;
 
+    private static final URL urlLevel1 = LevelReader.class.getResource("/level/level01.xml");
+    private static final URL urlLevel2 = LevelReader.class.getResource("/level/level02.xml");
+
     private final ApplicationWindow applicationWindow;
     private final Canvas canvas;
     private final KeyboardHandler keyboardHandler;
@@ -25,6 +28,9 @@ public class Engine {
         keyboardHandler = KeyboardHandler.getInstance(canvas.getInputMap(), canvas.getActionMap());
         keyboardHandler.addKeyboardAction(KeyEvent.VK_ESCAPE, ae -> applicationWindow.close());
         keyboardHandler.addKeyboardAction(KeyEvent.VK_F11, ae -> applicationWindow.toggleFullscreen());
+
+        keyboardHandler.addKeyboardAction(KeyEvent.VK_F1, ae -> { loadLevel(urlLevel1); canvas.repaint(); } );
+        keyboardHandler.addKeyboardAction(KeyEvent.VK_F2, ae -> { loadLevel(urlLevel2); canvas.repaint(); } );
     }
 
     public static Engine getInstance() {
