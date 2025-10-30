@@ -9,6 +9,7 @@ public class Block {
     private Block neighborUpperRight;
     private Block neighborLowerLeft;
     private Block neighborLowerRight;
+    private int numberOfVisits = 0;
 
     public Block(int id) {
         this.id = id;
@@ -41,6 +42,10 @@ public class Block {
 
     public Block getNeighborLowerRight() {
         return neighborLowerRight;
+    }
+
+    public int getNumberOfVisits() {
+        return numberOfVisits;
     }
 
     public int getRow() {
@@ -98,6 +103,10 @@ public class Block {
             neighborLowerRight.setColumn(column + 1);
         }
         this.neighborLowerRight = neighborLowerRight;
+    }
+
+    public void visit() {
+        numberOfVisits++;
     }
 
     @Override

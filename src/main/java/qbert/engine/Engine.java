@@ -13,6 +13,7 @@ public class Engine {
 
     private final ApplicationWindow applicationWindow;
     private final Canvas canvas;
+    private final KeyboardHandler keyboardHandler;
 
     private Engine() {
         canvas = new Canvas();
@@ -21,7 +22,7 @@ public class Engine {
         canvas.setParent(applicationWindow);
         applicationWindow.setContentPane(canvas);
 
-        KeyboardHandler keyboardHandler = KeyboardHandler.getInstance(canvas);
+        keyboardHandler = KeyboardHandler.getInstance(canvas.getInputMap(), canvas.getActionMap());
         keyboardHandler.addKeyboardAction(KeyEvent.VK_ESCAPE, ae -> applicationWindow.close());
         keyboardHandler.addKeyboardAction(KeyEvent.VK_F11, ae -> applicationWindow.toggleFullscreen());
     }
@@ -34,8 +35,17 @@ public class Engine {
         return instance;
     }
 
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public KeyboardHandler getKeyboardHandler() {
+        return keyboardHandler;
+    }
+
     public void loadLevel(URL url) {
         Level level = LevelReader.read(url);
+        GamePlay.getInstance().initialise(level);
         canvas.setLevel(level);
     }
 

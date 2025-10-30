@@ -8,17 +8,17 @@ import java.util.UUID;
 public class KeyboardHandler {
 
     private static KeyboardHandler instance = null;
-    private InputMap inputMap;
-    private ActionMap actionMap;
+    private final InputMap inputMap;
+    private final ActionMap actionMap;
 
-    private KeyboardHandler(Canvas canvas) {
-        this.inputMap = canvas.getInputMap();
-        this.actionMap = canvas.getActionMap();
+    private KeyboardHandler(InputMap inputMap, ActionMap actionMap) {
+        this.inputMap = inputMap;
+        this.actionMap = actionMap;
     }
 
-    public static KeyboardHandler getInstance(Canvas canvas) {
+    public static KeyboardHandler getInstance(InputMap inputMap, ActionMap actionMap) {
         if (instance == null) {
-            instance = new KeyboardHandler(canvas);
+            instance = new KeyboardHandler(inputMap, actionMap);
         }
 
         return instance;
@@ -26,6 +26,10 @@ public class KeyboardHandler {
 
     public void addKeyboardAction(int keyCode, ActionListener action) {
         addKeyboardAction(KeyStroke.getKeyStroke(keyCode, 0), action);
+    }
+
+    public void addKeyboardAction(int keyCode, int modifiers, ActionListener action) {
+        addKeyboardAction(KeyStroke.getKeyStroke(keyCode, modifiers), action);
     }
 
     public void addKeyboardAction(KeyStroke keyStroke, ActionListener action) {

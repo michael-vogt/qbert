@@ -38,11 +38,13 @@ public class Canvas extends JPanel {
             Graphics2D g2d = (Graphics2D) g.create();
             defineRenderingHints(g2d);
             drawer.drawLevel(g2d, level);
+            drawer.drawPlayer(g2d, GamePlay.getInstance().getPlayer());
         }
     }
 
     private void defineRenderingHints(Graphics2D g2d) {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
 
 }
