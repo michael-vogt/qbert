@@ -1,4 +1,4 @@
-package qbert.graphicsengine;
+package qbert.engine;
 
 import java.awt.*;
 

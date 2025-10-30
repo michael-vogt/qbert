@@ -5,7 +5,7 @@ import qbert.exceptions.NotANeighborException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Block implements Comparable {
+public class Block {
 
     private final int id;
     private int row = 0;
@@ -153,11 +153,4 @@ public class Block implements Comparable {
         return str;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        if (o instanceof Block otherBlock) {
-            return this.getId() - otherBlock.getId();
-        }
-        throw new IllegalArgumentException("Cannot compare Block and " + o.getClass().getName());
-    }
 }

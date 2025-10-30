@@ -1,4 +1,4 @@
-package qbert.graphicsengine;
+package qbert.engine;
 
 import qbert.level.Block;
 import qbert.level.Level;
@@ -6,20 +6,37 @@ import qbert.level.Level;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 public class Drawer {
 
-    private Drawer() {}
+    private static Drawer instance = null;
+    private final Canvas canvas;
 
-    public static void drawLevel(Graphics2D g2d, Level level, int startX, int startY) {
+    private Drawer(Canvas canvas) {
+        this.canvas = canvas;
+    }
+
+    public static Drawer getInstance(Canvas canvas) {
+        if (instance == null) {
+            instance = new Drawer(canvas);
+        }
+
+        return instance;
+    }
+
+    public void drawLevel(Graphics2D g2d, Level level) {
         int size = 50;
         double alpha = Math.toRadians(20);
 
         double dx = size * Math.cos(alpha);
         double dy = size * Math.sin(alpha);
+
+        Dimension levelDimensionInRowsAndColumns = level.getDimension();
+        Dimension levelDimensionInPixel = new Dimension((int) (2 * dx * levelDimensionInRowsAndColumns.width), (int) (levelDimensionInRowsAndColumns.height * size + 2 * dy * (Math.ceilDiv(levelDimensionInRowsAndColumns.height, 2))));
+        Dimension canvasSize = new Dimension(canvas.getWidth(), canvas.getHeight());
+        int startX = canvasSize.width / 2;
+        int startY = (canvasSize.height - levelDimensionInPixel.height) / 2 + (int)dy;
 
         AffineTransform T_nextRow = new AffineTransform();
         T_nextRow.translate(-dx, size + dy);
@@ -31,6 +48,17 @@ public class Drawer {
         T_prevColumn.translate(-2 * dx, 0);
 
         AffineTransform T0 = g2d.getTransform();
+
+        /*if (levelDimensionInPixel.height > canvasSize.height || levelDimensionInPixel.width > canvasSize.width) {
+            double factorX = canvasSize.getHeight() / levelDimensionInPixel.getHeight();
+            double factorY = canvasSize.getWidth() / levelDimensionInPixel.getWidth();
+            double factor = Math.min(factorX, factorY);
+
+            startX = canvasSize.width / 2;
+            startY = (canvasSize.height - (int) (levelDimensionInPixel.height * factor)) / 2 + (int)dy;
+
+            T0.scale(factor, factor);
+        }*/
         T0.translate(startX, startY);
 
         List<Block> blocks = level.getBlocks();
@@ -57,22 +85,7 @@ public class Drawer {
 
     }
 
-    public static void drawCubes(Graphics2D g2d) {
-        int size = 100;
-        double alpha = Math.toRadians(30);
-
-        double dx = size * Math.cos(alpha);
-        double dy = size * Math.sin(alpha);
-
-        g2d.translate(200, 100);
-        drawCube(g2d, size, alpha);
-        g2d.translate(-dx, size + dy);
-        drawCube(g2d, size, alpha);
-        g2d.translate(2*dx, 0);
-        drawCube(g2d, size, alpha);
-    }
-
-    private static void drawCube(Graphics2D g2d, int size, double alpha) {
+    private void drawCube(Graphics2D g2d, int size, double alpha) {
         AffineTransform originalTransform = g2d.getTransform();
 
         double dx = size * Math.cos(alpha);
@@ -109,21 +122,6 @@ public class Drawer {
         g2d.fill(diamond);
 
         g2d.setTransform(originalTransform);
-    }
-
-    private static void printTransformationMatrix(AffineTransform T) {
-        double[] matrix = new double[6];
-        T.getMatrix(matrix);
-        StringBuilder sb = new StringBuilder();
-        sb.append("[\n ");
-        for (int i = 0; i < 2; i++) {
-            sb.append("[");
-            for (int j = 0; j < 3; j++) {
-                sb.append(String.format("%.2f ", matrix[3*i+j]));
-            }
-            sb.append("]\n");
-        }
-        System.out.println(sb.append("]"));
     }
 
 }
