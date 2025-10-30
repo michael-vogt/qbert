@@ -6,7 +6,9 @@ import qbert.level.Level;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 public class Drawer {
 
@@ -19,10 +21,14 @@ public class Drawer {
         double dx = size * Math.cos(alpha);
         double dy = size * Math.sin(alpha);
 
-        AffineTransform T_row = new AffineTransform();
-        T_row.translate(-dx, size + dy);
-        AffineTransform T_column = new AffineTransform();
-        T_column.translate(2 * dx, 0);
+        AffineTransform T_nextRow = new AffineTransform();
+        T_nextRow.translate(-dx, size + dy);
+        AffineTransform T_prevRow = new AffineTransform();
+        T_prevRow.translate(dx, -(size + dy));
+        AffineTransform T_nextColumn = new AffineTransform();
+        T_nextColumn.translate(2 * dx, 0);
+        AffineTransform T_prevColumn = new AffineTransform();
+        T_prevColumn.translate(-2 * dx, 0);
 
         AffineTransform T0 = g2d.getTransform();
         T0.translate(startX, startY);
@@ -32,15 +38,19 @@ public class Drawer {
             int row = block.getRow();
             int column = block.getColumn();
 
+            AffineTransform T_row = (row > 0) ? T_nextRow : T_prevRow;
+            AffineTransform T_column = (column > 0) ? T_nextColumn : T_prevColumn;
+
             g2d.setTransform(T0);
-            for (int i = 0; i < row; i++) {
+            for (int i = 0; i < Math.abs(row); i++) {
                 g2d.transform(T_row);
             }
-            for (int j = 0; j < column; j++) {
+            for (int j = 0; j < Math.abs(column); j++) {
                 g2d.transform(T_column);
             }
 
             drawCube(g2d, size, alpha);
+            g2d.drawString(String.valueOf(block.getId()), 0, 0);
 
         }
 
@@ -99,6 +109,21 @@ public class Drawer {
         g2d.fill(diamond);
 
         g2d.setTransform(originalTransform);
+    }
+
+    private static void printTransformationMatrix(AffineTransform T) {
+        double[] matrix = new double[6];
+        T.getMatrix(matrix);
+        StringBuilder sb = new StringBuilder();
+        sb.append("[\n ");
+        for (int i = 0; i < 2; i++) {
+            sb.append("[");
+            for (int j = 0; j < 3; j++) {
+                sb.append(String.format("%.2f ", matrix[3*i+j]));
+            }
+            sb.append("]\n");
+        }
+        System.out.println(sb.append("]"));
     }
 
 }
