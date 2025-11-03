@@ -1,6 +1,7 @@
 package qbert.engine;
 
 import qbert.ApplicationWindow;
+import qbert.exceptions.EngineNotInitializedException;
 import qbert.level.Level;
 import qbert.level.LevelReader;
 
@@ -14,11 +15,24 @@ public class Engine {
     private static final URL urlLevel1 = LevelReader.class.getResource("/level/level01.xml");
     private static final URL urlLevel2 = LevelReader.class.getResource("/level/level02.xml");
 
-    private final ApplicationWindow applicationWindow;
-    private final Canvas canvas;
-    private final KeyboardHandler keyboardHandler;
+    private ApplicationWindow applicationWindow;
+    private Canvas canvas;
+    private KeyboardHandler keyboardHandler;
+    private boolean initialized = false;
 
     private Engine() {
+    }
+
+    public static Engine getInstance() {
+        if (instance == null) {
+            instance = new Engine();
+        }
+
+        return instance;
+    }
+
+    public void initialize() {
+        initialized = true;
         canvas = new Canvas();
         applicationWindow = new ApplicationWindow();
 
@@ -33,14 +47,6 @@ public class Engine {
         keyboardHandler.addKeyboardAction(KeyEvent.VK_F2, ae -> { loadLevel(urlLevel2); canvas.repaint(); } );
     }
 
-    public static Engine getInstance() {
-        if (instance == null) {
-            instance = new Engine();
-        }
-
-        return instance;
-    }
-
     public Canvas getCanvas() {
         return canvas;
     }
@@ -50,9 +56,19 @@ public class Engine {
     }
 
     public void loadLevel(URL url) {
+        if (!initialized) {
+            throw new EngineNotInitializedException("Engine not initialized!");
+        }
         Level level = LevelReader.read(url);
         GamePlay.getInstance().initialise(level);
         canvas.setLevel(level);
+    }
+
+    public void startApplication() {
+        if (!initialized) {
+            throw new EngineNotInitializedException("Engine not initialized!");
+        }
+        applicationWindow.setVisible(true);
     }
 
 }

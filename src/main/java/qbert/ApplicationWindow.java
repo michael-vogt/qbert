@@ -18,8 +18,6 @@ public class ApplicationWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1024, 768);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        setVisible(true);
     }
 
     public void close() {
