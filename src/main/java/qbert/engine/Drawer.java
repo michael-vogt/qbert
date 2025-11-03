@@ -57,9 +57,15 @@ public class Drawer {
             moveToRowColumn(g2d, T0, row, column);
 
             drawCube(g2d, size, alpha, null);
+
+            drawCube(g2d, size, alpha, Colors.getCubeShadingColor(block));
+
+            /*if (GamePlay.getInstance().blockReachableByNextMove(block)) {
+                drawCube(g2d, size, alpha, Colors.CubeReachable);
+            }
             if (block.getNumberOfVisits() > 0) {
                 drawCube(g2d, size, alpha, Colors.CubeHighlight);
-            }
+            }*/
 
         }
 

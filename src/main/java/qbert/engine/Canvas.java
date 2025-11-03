@@ -11,6 +11,8 @@ public class Canvas extends JPanel {
     private Level level;
     private final Drawer drawer;
     private ApplicationWindow parent;
+    private int fps = 1;
+    private final Timer timer;
 
     public Canvas() {
         this(null, null);
@@ -20,6 +22,19 @@ public class Canvas extends JPanel {
         this.level = level;
         this.parent = parent;
         this.drawer = Drawer.getInstance(this);
+
+        this.timer = new Timer(1000 / fps, e -> {
+           repaint();
+        });
+        timer.setRepeats(true);
+        timer.start();
+    }
+
+    public void setFPS(int fps) {
+        if (fps > 0) {
+            this.fps = fps;
+            timer.setDelay(1000 / fps);
+        }
     }
 
     public void setLevel(Level level) {

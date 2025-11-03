@@ -2,6 +2,7 @@ package qbert.engine;
 
 import qbert.characters.Move;
 import qbert.characters.Player;
+import qbert.level.Block;
 import qbert.level.Level;
 
 import java.awt.event.InputEvent;
@@ -24,6 +25,28 @@ public class GamePlay {
         }
 
         return instance;
+    }
+
+    public boolean blockReachableByNextMove(Block block) {
+        if (!initialised) {
+            return false;
+        }
+
+        Block playerBlock = player.getPosition();
+        if (Engine.getInstance().getKeyboardHandler().isKeyDown(KeyEvent.VK_SHIFT)) {
+            Block nul = playerBlock.getNeighborUpperLeft();
+            Block nur = playerBlock.getNeighborUpperRight();
+            if ((nul != null && nul.equals(block)) || (nur != null && nur.equals(block))) {
+                return true;
+            }
+        } else {
+            Block nll = playerBlock.getNeighborLowerLeft();
+            Block nlr = playerBlock.getNeighborLowerRight();
+            if ((nll != null && nll.equals(block)) || (nlr != null && nlr.equals(block))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Player getPlayer() {

@@ -45,6 +45,8 @@ public class Engine {
 
         keyboardHandler.addKeyboardAction(KeyEvent.VK_F1, ae -> { loadLevel(urlLevel1); canvas.repaint(); } );
         keyboardHandler.addKeyboardAction(KeyEvent.VK_F2, ae -> { loadLevel(urlLevel2); canvas.repaint(); } );
+
+        canvas.addKeyListener(keyboardHandler);
     }
 
     public Canvas getCanvas() {
@@ -62,6 +64,12 @@ public class Engine {
         Level level = LevelReader.read(url);
         GamePlay.getInstance().initialise(level);
         canvas.setLevel(level);
+    }
+
+    public void setFPS(int fps) {
+        if (initialized) {
+            canvas.setFPS(fps);
+        }
     }
 
     public void startApplication() {

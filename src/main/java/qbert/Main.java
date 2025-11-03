@@ -14,6 +14,7 @@ public class Main {
             @Override
             public void run() {
                 engine.startApplication();
+                engine.setFPS(10);
             }
         });
 
