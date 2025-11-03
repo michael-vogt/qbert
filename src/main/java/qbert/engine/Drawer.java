@@ -60,13 +60,6 @@ public class Drawer {
 
             drawCube(g2d, size, alpha, Colors.getCubeShadingColor(block));
 
-            /*if (GamePlay.getInstance().blockReachableByNextMove(block)) {
-                drawCube(g2d, size, alpha, Colors.CubeReachable);
-            }
-            if (block.getNumberOfVisits() > 0) {
-                drawCube(g2d, size, alpha, Colors.CubeHighlight);
-            }*/
-
         }
 
         g2d.setTransform(T0);

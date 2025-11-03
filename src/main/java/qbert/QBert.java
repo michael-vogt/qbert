@@ -4,7 +4,7 @@ import qbert.engine.Engine;
 
 import javax.swing.*;
 
-public class Main {
+public class QBert {
 
     public static final Engine engine = Engine.getInstance();
 

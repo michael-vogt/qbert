@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 public class GamePlay {
 
     private static GamePlay instance = null;
+    private static final int MOVE_UP_KEY = KeyEvent.VK_ALT;
+    private static final int MOVE_UP_MODIFIER = InputEvent.ALT_DOWN_MASK;
 
     private Level level;
     private Player player;
@@ -33,7 +35,7 @@ public class GamePlay {
         }
 
         Block playerBlock = player.getPosition();
-        if (Engine.getInstance().getKeyboardHandler().isKeyDown(KeyEvent.VK_SHIFT)) {
+        if (Engine.getInstance().getKeyboardHandler().isKeyDown(MOVE_UP_KEY)) {
             Block nul = playerBlock.getNeighborUpperLeft();
             Block nur = playerBlock.getNeighborUpperRight();
             if ((nul != null && nul.equals(block)) || (nur != null && nur.equals(block))) {
@@ -72,8 +74,8 @@ public class GamePlay {
 
         kbh.addKeyboardAction(KeyEvent.VK_LEFT, ae -> { player.move(Move.LOWER_LEFT); canvas.repaint(); });
         kbh.addKeyboardAction(KeyEvent.VK_RIGHT, ae -> { player.move(Move.LOWER_RIGHT); canvas.repaint(); });
-        kbh.addKeyboardAction(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK, ae -> { player.move(Move.UPPER_LEFT); canvas.repaint(); });
-        kbh.addKeyboardAction(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK, ae -> { player.move(Move.UPPER_RIGHT); canvas.repaint(); });
+        kbh.addKeyboardAction(KeyEvent.VK_LEFT, MOVE_UP_MODIFIER, ae -> { player.move(Move.UPPER_LEFT); canvas.repaint(); });
+        kbh.addKeyboardAction(KeyEvent.VK_RIGHT, MOVE_UP_MODIFIER, ae -> { player.move(Move.UPPER_RIGHT); canvas.repaint(); });
     }
 
 }

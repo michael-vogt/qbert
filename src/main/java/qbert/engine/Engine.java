@@ -5,8 +5,11 @@ import qbert.exceptions.EngineNotInitializedException;
 import qbert.level.Level;
 import qbert.level.LevelReader;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Engine {
 
@@ -19,6 +22,9 @@ public class Engine {
     private Canvas canvas;
     private KeyboardHandler keyboardHandler;
     private boolean initialized = false;
+
+    private Map<RenderingHints.Key, Object> renderingHints = new HashMap<>();
+    private boolean antialiasing;
 
     private Engine() {
     }
@@ -45,8 +51,10 @@ public class Engine {
 
         keyboardHandler.addKeyboardAction(KeyEvent.VK_F1, ae -> { loadLevel(urlLevel1); canvas.repaint(); } );
         keyboardHandler.addKeyboardAction(KeyEvent.VK_F2, ae -> { loadLevel(urlLevel2); canvas.repaint(); } );
+        keyboardHandler.addKeyboardAction(KeyEvent.VK_F3, ae -> { toggleAntialiasing(); canvas.repaint(); } );
 
         canvas.addKeyListener(keyboardHandler);
+        setAntialiasing(true);
     }
 
     public Canvas getCanvas() {
@@ -55,6 +63,10 @@ public class Engine {
 
     public KeyboardHandler getKeyboardHandler() {
         return keyboardHandler;
+    }
+
+    public Map<RenderingHints.Key, Object> getRenderingHints() {
+        return renderingHints;
     }
 
     public void loadLevel(URL url) {
@@ -77,6 +89,21 @@ public class Engine {
             throw new EngineNotInitializedException("Engine not initialized!");
         }
         applicationWindow.setVisible(true);
+    }
+
+    public void toggleAntialiasing() {
+        setAntialiasing(!antialiasing);
+    }
+
+    private void setAntialiasing(boolean antialiasing) {
+        this.antialiasing = antialiasing;
+        if (antialiasing) {
+            renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        } else {
+            renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+            renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+        }
     }
 
 }

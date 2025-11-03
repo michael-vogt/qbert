@@ -5,6 +5,7 @@ import qbert.level.Level;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 public class Canvas extends JPanel {
 
@@ -51,15 +52,15 @@ public class Canvas extends JPanel {
 
         if (level != null) {
             Graphics2D g2d = (Graphics2D) g.create();
-            defineRenderingHints(g2d);
+            setRenderingHints(g2d, Engine.getInstance().getRenderingHints());
             drawer.drawLevel(g2d, level);
             drawer.drawPlayer(g2d, GamePlay.getInstance().getPlayer());
         }
     }
 
-    private void defineRenderingHints(Graphics2D g2d) {
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    public void setRenderingHints(Graphics2D g2d, Map<RenderingHints.Key, Object> renderingHints) {
+        renderingHints.forEach(g2d::setRenderingHint);
     }
+
 
 }

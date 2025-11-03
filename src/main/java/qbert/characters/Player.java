@@ -9,7 +9,12 @@ public class Player {
 
     public Player(Block startingPosition) {
         this.position = startingPosition;
-        state = (position != null) ? CharacterState.ALIVE : CharacterState.DEAD;
+        if (startingPosition != null) {
+            state = CharacterState.ALIVE;
+            startingPosition.visit();
+        } else {
+            state = CharacterState.DEAD;
+        }
     }
 
     public Block getPosition() {
@@ -23,11 +28,10 @@ public class Player {
     public void move(Move direction) {
         if (position != null) {
             Block neighbor = switch (direction) {
-                case UPPER_LEFT -> neighbor = position.getNeighborUpperLeft();
-                case UPPER_RIGHT -> neighbor = position.getNeighborUpperRight();
-                case LOWER_LEFT -> neighbor = position.getNeighborLowerLeft();
-                case LOWER_RIGHT -> neighbor = position.getNeighborLowerRight();
-                default -> null;
+                case UPPER_LEFT -> position.getNeighborUpperLeft();
+                case UPPER_RIGHT -> position.getNeighborUpperRight();
+                case LOWER_LEFT -> position.getNeighborLowerLeft();
+                case LOWER_RIGHT -> position.getNeighborLowerRight();
             };
 
             if (neighbor != null) {
